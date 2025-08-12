@@ -11,10 +11,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = {"http://localhost:5000", "http://localhost:3000", "http://localhost:5173"})
+@CrossOrigin(origins = {
+    "http://localhost:5000", 
+    "http://localhost:3000", 
+    "http://localhost:5173", 
+    "http://balneabilidade-alb-1182868018.us-east-1.elb.amazonaws.com",
+    "http://balneabilidade-alb-1075453909.us-east-1.elb.amazonaws.com"
+})
 @RestController
 @RequestMapping("/api/praias")
-
 public class PraiaController {
 
     private final PraiaService praiaService;
@@ -36,7 +41,8 @@ public class PraiaController {
         return praia.map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.notFound().build());
     }
-    @CrossOrigin(origins = "http://localhost:5000")
+
+    // REMOVIDO: @CrossOrigin duplicado aqui
     @PostMapping
     public ResponseEntity<Praia> createPraia(@RequestBody Praia praia) {
         Praia savedPraia = praiaService.savePraia(praia);
@@ -79,9 +85,8 @@ public class PraiaController {
     }
 
     @PostMapping("/batch")
-public ResponseEntity<List<Praia>> createPraias(@RequestBody List<Praia> praias) {
-    List<Praia> savedPraias = praiaService.saveAllPraias(praias);
-    return new ResponseEntity<>(savedPraias, HttpStatus.CREATED);
-}
-
+    public ResponseEntity<List<Praia>> createPraias(@RequestBody List<Praia> praias) {
+        List<Praia> savedPraias = praiaService.saveAllPraias(praias);
+        return new ResponseEntity<>(savedPraias, HttpStatus.CREATED);
+    }
 }
