@@ -14,7 +14,7 @@ jobs:
       - name: Verificar padrão do nome da branch
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
-          if [[ ! "$BRANCH_NAME" =~ ^(feat|fix|hotfix|release|chore|test|docs|refactor|perf|ci|build)/[a-z0-9._-]+$ && "$BRANCH_NAME" != "main" ]]; then
+          if [[ ! "$BRANCH_NAME" =~ ^(dev|homolog|prod|feat|fix|hotfix|release|chore|test|docs|refactor|perf|ci|build)/[a-z0-9._-]+$ && "$BRANCH_NAME" != "main" ]]; then
             echo "❌ Nome de branch inválido: $BRANCH_NAME"
             echo "O padrão deve ser: <tipo>/<descricao> (ex: feat/login, fix/bug-123)"
             exit 1
