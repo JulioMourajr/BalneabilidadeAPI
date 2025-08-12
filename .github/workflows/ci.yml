@@ -53,6 +53,6 @@ jobs:
           COMMIT_HASH: ${{ github.sha }}
         run: |
           IMAGE_TAG="${BRANCH_NAME}-${COMMIT_HASH:0:7}"
-          docker build -t my-app:${IMAGE_TAG} .
-          docker tag my-app:${IMAGE_TAG} ${{ vars.DOCKER_USERNAME }}/my-app:${IMAGE_TAG}
-          docker push ${{ vars.DOCKER_USERNAME
+          docker build -t balneabilidadeapi:${IMAGE_TAG} .
+          docker tag balneabilidadeapi:${IMAGE_TAG} ${{ vars.DOCKER_USERNAME }}/balneabilidadeapi:${IMAGE_TAG}
+          docker push ${{ vars.DOCKER_USERNAME }}/balneabilidadeapi:${IMAGE_TAG}
