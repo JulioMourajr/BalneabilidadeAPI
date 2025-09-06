@@ -1,16 +1,19 @@
 FROM openjdk:21-jdk-slim
 
-LABEL maintainer="Julio"
-LABEL description="A Docker image for running a Java application with a specific JAR file."
-
-# Define o diretório de trabalho
 WORKDIR /app
 
-# Copia apenas o JAR necessário para dentro do container
+# Download OpenTelemetry Java agent
+ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.32.0/opentelemetry-javaagent.jar .
+
 COPY target/*.jar app.jar
 
-# Remove caches do apt (caso use apt-get futuramente)
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+EXPOSE 8080
 
-# Comando para rodar a aplicação
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", \
+    "-javaagent:/app/opentelemetry-javaagent.jar", \
+    "-Dotel.service.name=balneabilidade-api", \
+    "-Dotel.exporter.otlp.endpoint=http://otel:4317", \
+    "-Dotel.metrics.exporter=otlp", \
+    "-Dotel.logs.exporter=otlp", \
+    "-Dotel.traces.exporter=otlp", \
+    "-jar", "app.jar"]
